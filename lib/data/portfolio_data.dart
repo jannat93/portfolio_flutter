@@ -90,11 +90,11 @@ class PortfolioData {
       'date': '1 Year',
       'company': 'IIUC',
       'role': 'Teaching Assistant',
-      'location': 'Chattogram, Bangladesh',
+      'location': 'International Islamic University Chittagong, Chattogram, Bangladesh',
       'award': null,
       'points': [
         'Conducted lab sessions for Software Development, Compiler Design, and DBMS.',
-        'Mentored 50+ students in programming, debugging, and core CS concepts.',
+        'Mentored 70+ students in programming, debugging, and core CS concepts.',
       ],
     },
   ];

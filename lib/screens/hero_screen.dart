@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 import '../data/portfolio_data.dart';
 import '../widgets/common_widgets.dart';
@@ -20,7 +19,8 @@ class HeroScreen extends StatelessWidget {
             RevealWidget(
               delay: 0,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: AppTheme.teal.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(100),
@@ -47,6 +47,37 @@ class HeroScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 28),
+            RevealWidget(
+              delay: 25,
+              child: Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+                decoration: BoxDecoration(
+                  color: AppTheme.bg3,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppTheme.cardBorder, width: 0.5),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'I build production-ready Flutter apps end-to-end: app architecture, documentation, backend APIs, and AI features.',
+                      style: AppTheme.dmStyle(size: 14, height: 1.7),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Recruiters hire me when they want one developer to own app design, backend systems, API integration, and AI delivery.',
+                      style: AppTheme.dmStyle(
+                          size: 12, color: AppTheme.textSecondary, height: 1.6),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
             RevealWidget(
               delay: 50,
               child: Container(
@@ -105,12 +136,12 @@ class HeroScreen extends StatelessWidget {
             RevealWidget(
               delay: 200,
               child: SizedBox(
-                height: 32,
+                height: 40,
                 child: AnimatedTextKit(
                   repeatForever: true,
                   animatedTexts: [
                     TypewriterAnimatedText(
-                      'Full-Stack Developer',
+                      'App architecture with full documentation',
                       textStyle: AppTheme.dmStyle(
                         size: 16,
                         color: AppTheme.accent3,
@@ -119,7 +150,7 @@ class HeroScreen extends StatelessWidget {
                       speed: const Duration(milliseconds: 80),
                     ),
                     TypewriterAnimatedText(
-                      'Flutter & Dart Expert',
+                      'Backend systems and API integration',
                       textStyle: AppTheme.dmStyle(
                         size: 16,
                         color: AppTheme.accent3,
@@ -128,7 +159,7 @@ class HeroScreen extends StatelessWidget {
                       speed: const Duration(milliseconds: 80),
                     ),
                     TypewriterAnimatedText(
-                      'Django Backend Developer',
+                      'AI model design and app integration',
                       textStyle: AppTheme.dmStyle(
                         size: 16,
                         color: AppTheme.teal2,
@@ -137,7 +168,7 @@ class HeroScreen extends StatelessWidget {
                       speed: const Duration(milliseconds: 80),
                     ),
                     TypewriterAnimatedText(
-                      'ML Integration Specialist',
+                      'Flutter apps with backend, docs, and AI',
                       textStyle: AppTheme.dmStyle(
                         size: 16,
                         color: AppTheme.teal2,
@@ -149,7 +180,7 @@ class HeroScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 26),
             RevealWidget(
               delay: 250,
               child: Text(
@@ -190,9 +221,9 @@ class HeroScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: PortfolioData.stats
                       .map((s) => _StatItem(
-                    value: s['value'],
-                    label: s['label'],
-                  ))
+                            value: s['value'],
+                            label: s['label'],
+                          ))
                       .toList(),
                 ),
               ),
@@ -205,9 +236,12 @@ class HeroScreen extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  _InfoChip(icon: Icons.location_on_rounded, label: 'Chattogram, BD'),
-                  _InfoChip(icon: Icons.email_rounded, label: PortfolioData.email),
-                  _InfoChip(icon: Icons.phone_rounded, label: PortfolioData.phone),
+                  _InfoChip(
+                      icon: Icons.location_on_rounded, label: 'Chattogram, BD'),
+                  _InfoChip(
+                      icon: Icons.email_rounded, label: PortfolioData.email),
+                  _InfoChip(
+                      icon: Icons.phone_rounded, label: PortfolioData.phone),
                 ],
               ),
             ),
@@ -253,8 +287,7 @@ class _PrimaryBtn extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [AppTheme.accent, AppTheme.accent2]),
+          gradient: LinearGradient(colors: [AppTheme.accent, AppTheme.accent2]),
           borderRadius: BorderRadius.circular(100),
         ),
         child: Text(label,
@@ -283,7 +316,9 @@ class _SecondaryBtn extends StatelessWidget {
         ),
         child: Text(label,
             style: AppTheme.dmStyle(
-                size: 10, color: AppTheme.textSecondary, weight: FontWeight.w500)),
+                size: 10,
+                color: AppTheme.textSecondary,
+                weight: FontWeight.w500)),
       ),
     );
   }
@@ -309,8 +344,7 @@ class _InfoChip extends StatelessWidget {
           Icon(icon, size: 13, color: AppTheme.accent2),
           const SizedBox(width: 6),
           Text(label,
-              style: AppTheme.dmStyle(
-                  size: 12, color: AppTheme.textSecondary)),
+              style: AppTheme.dmStyle(size: 12, color: AppTheme.textSecondary)),
         ],
       ),
     );
