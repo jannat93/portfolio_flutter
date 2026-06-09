@@ -1,17 +1,18 @@
 class PortfolioData {
   static const String name = 'Jannatul Nayeem';
-  static const String tagline = 'Full-Stack & Flutter Developer';
+  static const String tagline = 'Engineering Scalable Backends & Production-Grade Mobile Apps';
   static const String location = 'Hathazari, Chattogram, Bangladesh';
-  static const String email = 'jannatul.nayeem6053@gmail.com';
+  static const String email = 'jannatul.aip@gmail.com';
   static const String phone = '+880 1864 776053';
 
-  // Professional Links updated from document
+  // Professional External Assets & Anchors
   static const String linkedin = 'https://www.linkedin.com/in/jannatul-nayeem-867305333';
   static const String github = 'https://github.com/jannat93';
-  static const String portfolio = 'https://portfolio-topaz-nu-97.vercel.app/';
+  static const String portfolio = 'https://jannat93.github.io/portfolio_flutter/'; // Configured live domain
+  static const String internshipCertificate = 'https://drive.google.com/file/d/1PFOGCIpksJUltffi903luEk07pL7uxFt/view?usp=sharing';
 
   static const String summary =
-      'Passionate software developer building impactful, production-grade mobile apps and scalable Django backends. Proven ability to lead teams, deliver under pressure, and contribute to end-to-end product development.';
+      'Passionate and results-driven software engineer with a strong focus on building impactful, real-world solutions. Full-Stack & Flutter Developer with hands-on experience building production-grade mobile applications and scalable Django backends. Skilled in advanced state management architectures, RESTful API design, database optimization, and machine learning pipeline integration. Proven ability to lead development teams, deliver high-quality projects under pressure, and contribute to end-to-end product development.';
 
   static const List<Map<String, dynamic>> stats = [
     {'value': '8+', 'label': 'Projects'},
@@ -26,8 +27,8 @@ class PortfolioData {
       'title': 'Mobile & Frontend',
       'color': 'accent',
       'tags': [
-        'Flutter', 'Dart', 'Riverpod', 'GetX', 'Firebase',
-        'FCM', 'Hive', 'SQLite', 'Figma', 'Animations',
+        'Flutter', 'Dart', 'BloC', 'Provider', 'Riverpod', 'GetX', 'REST API Integration',
+        'Firebase', 'FCM', 'Firestore', 'Hive', 'SQLite', 'Figma', 'Animations',
       ],
     },
     {
@@ -35,8 +36,8 @@ class PortfolioData {
       'title': 'Backend & Web',
       'color': 'teal',
       'tags': [
-        'Django', 'DRF', 'Node.js', 'Express.js', 'Flask',
-        'REST APIs', 'JWT Auth', 'PostgreSQL', 'MySQL', 'cPanel',
+        'Django', 'DRF', 'Node.js', 'Flask', 'REST APIs', 'JWT Auth',
+        'PostgreSQL', 'MySQL', 'Oracle', 'SQLite', 'cPanel',
       ],
     },
     {
@@ -44,7 +45,7 @@ class PortfolioData {
       'title': 'AI & Machine Learning',
       'color': 'accent',
       'tags': [
-        'Scikit-learn', 'NLP', 'Data Preprocessing',
+        'TensorFlow', 'NLP', 'Scikit-learn', 'Data Preprocessing',
         'Model Integration', 'Python',
       ],
     },
@@ -66,14 +67,14 @@ class PortfolioData {
       'role': 'Flutter & Django Developer Intern',
       'location': 'Chattogram, Bangladesh',
       'award': '⭐ Best Intern of the Month',
-      'certificateLink': 'https://drive.google.com/file/d/1PFOGCIpksJUltffi903luEk07pL7uxFt/view?usp=sharing',
+      'certificateLink': internshipCertificate,
       'points': [
         'Built & deployed Aspire Internship Platform backend (Django) — student applications, company matching, workflow automation.',
-        'Led Flutter development for Ain Bondhu Legal Support Platform; sole backend developer using Django REST APIs.',
-        'Built full-stack Expense Tracker with Flutter + Django backend and monthly summaries.',
-        'Led Flutter dev for Ashpash News App and Water Tracking App.',
-        'Optimized DB models; implemented auth/authorization for scalable performance.',
-        'Contributed to PsyCoach mental health platform features.',
+        'Led Flutter development for Ain Bondhu Legal Support Platform; sole backend developer using Django REST APIs and led web team integration.',
+        'Built full-stack Expense Tracker with Flutter + Django backend, expense categorization, and secure SQLite integration.',
+        'Led Flutter dev for Ashpash News App (real-time UI) and Water Tracking App.',
+        'Optimized DB models and implemented authentication/authorization modules for scalable architecture performance.',
+        'Contributed to PsyCoach mental health platform core product features.',
       ],
     },
     {
@@ -94,7 +95,7 @@ class PortfolioData {
       'award': null,
       'points': [
         'Conducted lab sessions for Software Development, Compiler Design, and DBMS.',
-        'Mentored 70+ students in programming, debugging, and core CS concepts.',
+        'Mentored 50+ students in programming, debugging, and core CS concepts.',
       ],
     },
   ];
@@ -107,7 +108,7 @@ class PortfolioData {
       'badgeColor': 'teal',
       'desc': 'Legal support app with scalable Django REST backend. Led full Flutter UI development and API integration.',
       'stack': ['Flutter', 'Django REST', 'JWT'],
-      'link': 'https://www.linkedin.com/feed/update/urn:li:activity:7397933846819717120/?originTrackingId=BFuQO%2BmE8RjPRAdUqx1ekg%3D%3D', // Showcase Link
+      'link': 'https://www.linkedin.com/feed/update/urn:li:activity:7397933846819717120/?originTrackingId=BFuQO%2BmE8RjPRAdUqx1ekg%3D%3D',
       'frontendRepo': 'https://github.com/thenexgenix/Ainbondhu_Mobile_Application_Flutter',
       'backendRepo': 'https://github.com/thenexgenix/Ain_Bondhu_backend.git',
     },
@@ -153,7 +154,7 @@ class PortfolioData {
       'title': 'Fortune Game Teller',
       'badge': null,
       'badgeColor': null,
-      'desc': 'Prediction app implementing OS scheduling algorithms (FCFS, Round Robin, SJF) for unique fortune logic.',
+      'desc': 'Prediction app transforming low-level OS CPU scheduling algorithms (FCFS, Round Robin, SJF) into gameplay logic.',
       'stack': ['Dart', 'OS Algorithms', 'Flutter'],
       'link': 'https://docs.google.com/document/d/1QAJM5Th9ZMhXttlq41zGGgs2-nVBZ1PFy6uEAHNXFmU/edit?usp=sharing',
     },
@@ -162,7 +163,7 @@ class PortfolioData {
       'title': 'IIUC Blood Bank System',
       'badge': 'Ongoing',
       'badgeColor': 'gold',
-      'desc': 'University blood bank platform connecting donors and recipients, streamlining emergency blood requests.',
+      'desc': 'University network hub platform connecting donors and recipients to minimize emergency blood request response times.',
       'stack': ['Flutter', 'Django', 'Firebase'],
       'link': '',
     },
@@ -171,7 +172,7 @@ class PortfolioData {
       'title': 'Personal Portfolio & Mini Apps',
       'badge': 'Open Source',
       'badgeColor': 'teal',
-      'desc': 'Built To-Do App (Riverpod + Firebase), Quizard quiz app (GetX), and Facebook Clone using PHP/CSS.',
+      'desc': 'Built open-source sandbox: To-Do App (Riverpod + Firebase), Quizard quiz app (GetX), and Facebook Clone module.',
       'stack': ['Riverpod', 'GetX', 'PHP', 'CSS'],
       'link': 'https://github.com/jannat93',
     },
@@ -243,7 +244,7 @@ class PortfolioData {
     },
     {
       'year': 'Certifications',
-      'degree': 'Flutter & Firebase, Competitive Programming, Digital Skills',
+      'degree': 'Flutter & Firebase, Competitive Programming, Digital Skills Training',
       'inst': 'Various Institutions',
       'gpa': '',
     },

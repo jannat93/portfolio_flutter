@@ -43,9 +43,16 @@ class _ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final link = project['link'] as String;
+    final frontendRepo = project['frontendRepo'] as String?;
+    final backendRepo = project['backendRepo'] as String?;
+    final liveLink = project['liveLink'] as String?;
+
+    // Check if there are any actionable links at all
+    final hasActions = link.isNotEmpty || frontendRepo != null || backendRepo != null || liveLink != null;
+
     return GlassCard(
       borderColor: AppTheme.teal.withOpacity(0.3),
-      onTap: link.isNotEmpty ? () => launchUrl(Uri.parse(link)) : null,
+      // Removed parent onTap to allow child buttons to receive clean touch events
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -77,22 +84,6 @@ class _ProjectCard extends StatelessWidget {
                   project['badge'] as String,
                   colorType: project['badgeColor'] as String? ?? 'teal',
                 ),
-              if (link.isNotEmpty) ...[
-                const SizedBox(width: 8),
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border:
-                        Border.all(color: AppTheme.cardBorder, width: 0.5),
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.open_in_new_rounded,
-                        size: 14, color: AppTheme.textTertiary),
-                  ),
-                ),
-              ],
             ],
           ),
           const SizedBox(height: 12),
@@ -101,6 +92,8 @@ class _ProjectCard extends StatelessWidget {
             style: AppTheme.dmStyle(size: 13, height: 1.75),
           ),
           const SizedBox(height: 12),
+
+          // Technical Stack Tags
           Wrap(
             spacing: 6,
             runSpacing: 6,
@@ -108,6 +101,66 @@ class _ProjectCard extends StatelessWidget {
                 .map((t) => StackTag(t))
                 .toList(),
           ),
+
+          // Unified Action Buttons Block (Brought to the bottom for clean UI hierarchy)
+          if (hasActions) ...[
+            const SizedBox(height: 16),
+            const Divider(height: 1, color: Colors.white10), // Clean separator line
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                // Main Project Link (e.g., Case Study / LinkedIn Post / Doc)
+                if (link.isNotEmpty)
+                  OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: AppTheme.teal.withOpacity(0.5)),
+                      foregroundColor: AppTheme.teal,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                    onPressed: () => launchUrl(Uri.parse(link)),
+                    icon: const Icon(Icons.article_outlined, size: 14),
+                    label: const Text('Overview', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                  ),
+                // Live App/Backend Deployment
+                if (liveLink != null)
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.teal,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                    onPressed: () => launchUrl(Uri.parse(liveLink)),
+                    icon: const Icon(Icons.language, size: 14),
+                    label: const Text('Live Demo', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                  ),
+                // Frontend Code Repository
+                if (frontendRepo != null)
+                  TextButton.icon(
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.textSecondary,
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    ),
+                    onPressed: () => launchUrl(Uri.parse(frontendRepo)),
+                    icon: const Icon(Icons.code, size: 14),
+                    label: const Text('Frontend', style: TextStyle(fontSize: 11)),
+                  ),
+                // Backend Code Repository
+                if (backendRepo != null)
+                  TextButton.icon(
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppTheme.textSecondary,
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    ),
+                    onPressed: () => launchUrl(Uri.parse(backendRepo)),
+                    icon: const Icon(Icons.storage, size: 14),
+                    label: const Text('Backend', style: TextStyle(fontSize: 11)),
+                  ),
+              ],
+            ),
+          ],
         ],
       ),
     );

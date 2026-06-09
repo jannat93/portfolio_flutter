@@ -17,6 +17,8 @@ class _ContactScreenState extends State<ContactScreen> {
   final _emailCtrl = TextEditingController();
   final _msgCtrl = TextEditingController();
 
+  static const String targetEmail = 'jannatul.aip@gmail.com';
+
   @override
   void dispose() {
     _nameCtrl.dispose();
@@ -29,22 +31,51 @@ class _ContactScreenState extends State<ContactScreen> {
     final name = _nameCtrl.text.trim();
     final email = _emailCtrl.text.trim();
     final msg = _msgCtrl.text.trim();
+
     if (name.isEmpty || email.isEmpty || msg.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill all fields.')),
       );
       return;
     }
-    final uri = Uri(
-      scheme: 'mailto',
-      path: PortfolioData.email,
-      queryParameters: {
-        'subject': 'Portfolio Contact from $name',
-        'body': 'From: $name\nEmail: $email\n\n$msg',
-      },
-    );
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+
+    // FIX: URL-encode the subject and body components manually.
+    // This stops web browsers from dropping the request due to formatting spaces or newlines.
+    final String subject = Uri.encodeComponent('Portfolio Contact from $name');
+    final String body = Uri.encodeComponent('From: $name\nSender Email: $email\n\nMessage:\n$msg');
+
+    final Uri uri = Uri.parse('mailto:$targetEmail?subject=$subject&body=$body');
+
+    try {
+      // FORCE EXTERNAL APPLICATION MODE: This ensures Flutter Web commands the
+      // OS to launch the local mail application cleanly rather than trying to open an empty tab.
+      final success = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (success) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Opening email client...')),
+          );
+        }
+        // Clears the fields for a fresh state
+        _nameCtrl.clear();
+        _emailCtrl.clear();
+        _msgCtrl.clear();
+      } else {
+        throw 'Launch failed';
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open default mail app. Copying email instead.'),
+          ),
+        );
+        _copyToClipboard(targetEmail);
+      }
     }
   }
 
@@ -81,35 +112,31 @@ class _ContactScreenState extends State<ContactScreen> {
                 _ContactTile(
                   icon: Icons.email_rounded,
                   label: 'Email',
-                  value: PortfolioData.email,
-                  onTap: () => launchUrl(Uri.parse('mailto:${PortfolioData.email}')),
-                  onLongPress: () => _copyToClipboard(PortfolioData.email),
+                  value: targetEmail,
+                  onTap: () => launchUrl(Uri.parse('mailto:$targetEmail'), mode: LaunchMode.externalApplication),
+                  onLongPress: () => _copyToClipboard(targetEmail),
                 ),
-                const SizedBox(height: 10),
                 _ContactTile(
                   icon: Icons.phone_rounded,
                   label: 'Phone',
                   value: PortfolioData.phone,
-                  onTap: () => launchUrl(Uri.parse('tel:${PortfolioData.phone}')),
+                  onTap: () => launchUrl(Uri.parse('tel:${PortfolioData.phone.replaceAll(' ', '')}'), mode: LaunchMode.externalApplication),
                   onLongPress: () => _copyToClipboard(PortfolioData.phone),
                 ),
-                const SizedBox(height: 10),
                 _ContactTile(
                   icon: Icons.work_rounded,
                   label: 'LinkedIn',
                   value: 'Connect on LinkedIn',
-                  onTap: () => launchUrl(Uri.parse(PortfolioData.linkedin)),
+                  onTap: () => launchUrl(Uri.parse(PortfolioData.linkedin), mode: LaunchMode.externalApplication),
                   onLongPress: null,
                 ),
-                const SizedBox(height: 10),
                 _ContactTile(
                   icon: Icons.code_rounded,
                   label: 'GitHub',
                   value: 'View my repositories',
-                  onTap: () => launchUrl(Uri.parse(PortfolioData.github)),
+                  onTap: () => launchUrl(Uri.parse(PortfolioData.github), mode: LaunchMode.externalApplication),
                   onLongPress: null,
                 ),
-                const SizedBox(height: 10),
                 _ContactTile(
                   icon: Icons.location_on_rounded,
                   label: 'Location',
@@ -206,7 +233,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '© 2025 Jannatul Nayeem · Chattogram, Bangladesh',
+                    '© 2026 Jannatul Nayeem · Chattogram, Bangladesh',
                     style: AppTheme.dmStyle(size: 12, color: AppTheme.textTertiary),
                     textAlign: TextAlign.center,
                   ),
@@ -236,52 +263,55 @@ class _ContactTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      onLongPress: onLongPress,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppTheme.cardBg,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.cardBorder, width: 0.5),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: AppTheme.accent.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-                border:
-                    Border.all(color: AppTheme.cardBorder, width: 0.5),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10), // Clean layout list encapsulation
+      child: GestureDetector(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppTheme.cardBg,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppTheme.cardBorder, width: 0.5),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: AppTheme.accent.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                  border:
+                  Border.all(color: AppTheme.cardBorder, width: 0.5),
+                ),
+                child: Icon(icon, size: 18, color: AppTheme.accent2),
               ),
-              child: Icon(icon, size: 18, color: AppTheme.accent2),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(label,
-                      style: AppTheme.dmStyle(
-                          size: 11,
-                          color: AppTheme.textTertiary,
-                          weight: FontWeight.w500)
-                          .copyWith(letterSpacing: 0.5)),
-                  Text(value,
-                      style: AppTheme.dmStyle(
-                          size: 13,
-                          color: AppTheme.textPrimary,
-                          weight: FontWeight.w400)),
-                ],
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(label,
+                        style: AppTheme.dmStyle(
+                            size: 11,
+                            color: AppTheme.textTertiary,
+                            weight: FontWeight.w500)
+                            .copyWith(letterSpacing: 0.5)),
+                    Text(value,
+                        style: AppTheme.dmStyle(
+                            size: 13,
+                            color: AppTheme.textPrimary,
+                            weight: FontWeight.w400)),
+                  ],
+                ),
               ),
-            ),
-            if (onTap != null)
-              Icon(Icons.arrow_forward_ios_rounded,
-                  size: 14, color: AppTheme.textTertiary),
-          ],
+              if (onTap != null)
+                Icon(Icons.arrow_forward_ios_rounded,
+                    size: 14, color: AppTheme.textTertiary),
+            ],
+          ),
         ),
       ),
     );
@@ -310,9 +340,9 @@ class _FormField extends StatelessWidget {
         Text(
           label.toUpperCase(),
           style: AppTheme.dmStyle(
-                  size: 10,
-                  color: AppTheme.textTertiary,
-                  weight: FontWeight.w500)
+              size: 10,
+              color: AppTheme.textTertiary,
+              weight: FontWeight.w500)
               .copyWith(letterSpacing: 1.5),
         ),
         const SizedBox(height: 6),
@@ -329,20 +359,20 @@ class _FormField extends StatelessWidget {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide:
-                  BorderSide(color: AppTheme.cardBorder, width: 0.5),
+              BorderSide(color: AppTheme.cardBorder, width: 0.5),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide:
-                  BorderSide(color: AppTheme.cardBorder, width: 0.5),
+              BorderSide(color: AppTheme.cardBorder, width: 0.5),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide:
-                  BorderSide(color: AppTheme.accent, width: 1),
+              BorderSide(color: AppTheme.accent, width: 1),
             ),
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           ),
         ),
       ],
