@@ -39,18 +39,23 @@ class _ContactScreenState extends State<ContactScreen> {
       return;
     }
 
-    // FIX: URL-encode the subject and body components manually.
-    // This stops web browsers from dropping the request due to formatting spaces or newlines.
-    final String subject = Uri.encodeComponent('Portfolio Contact from $name');
-    final String body = Uri.encodeComponent('From: $name\nSender Email: $email\n\nMessage:\n$msg');
-
-    final Uri uri = Uri.parse('mailto:$targetEmail?subject=$subject&body=$body');
+    // FIX: Pass raw text directly into structural queryParameters.
+    // Flutter's Uri constructor automatically handles encoding, ensuring compatibility
+    // across all modern desktop/mobile web browsers without losing the message payload.
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: targetEmail,
+      queryParameters: {
+        'subject': 'Portfolio Contact from $name',
+        'body': 'From: $name\nSender Email: $email\n\nMessage:\n$msg',
+      },
+    );
 
     try {
-      // FORCE EXTERNAL APPLICATION MODE: This ensures Flutter Web commands the
-      // OS to launch the local mail application cleanly rather than trying to open an empty tab.
+      // FORCE EXTERNAL APPLICATION MODE: This bypasses the nested browser window layer
+      // completely, forcing the OS to delegate execution directly to the user's default mail agent.
       final success = await launchUrl(
-        uri,
+        emailUri,
         mode: LaunchMode.externalApplication,
       );
 
@@ -113,7 +118,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   icon: Icons.email_rounded,
                   label: 'Email',
                   value: targetEmail,
-                  onTap: () => launchUrl(Uri.parse('mailto:$targetEmail'), mode: LaunchMode.externalApplication),
+                  onTap: () => launchUrl(Uri(scheme: 'mailto', path: targetEmail), mode: LaunchMode.externalApplication),
                   onLongPress: () => _copyToClipboard(targetEmail),
                 ),
                 _ContactTile(
@@ -264,7 +269,7 @@ class _ContactTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10), // Clean layout list encapsulation
+      padding: const EdgeInsets.only(bottom: 10),
       child: GestureDetector(
         onTap: onTap,
         onLongPress: onLongPress,
